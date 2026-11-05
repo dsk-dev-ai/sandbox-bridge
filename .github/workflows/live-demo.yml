@@ -1,0 +1,36 @@
+name: Live demo check
+
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Probe the public deployment
+        env:
+          DEMO_URL: ${{ vars.DEMO_URL }}
+        run: |
+          if [ -z "$DEMO_URL" ]; then
+            echo "::notice::Set the repository variable DEMO_URL to enable the live demo check."
+            exit 0
+          fi
+
+          DEMO_URL="${DEMO_URL%/}"
+          healthy=$(curl -sS -o /tmp/healthy.json -w "%{http_code}" --max-time 20 "$DEMO_URL/api/demo/checkout?mode=healthy") || true
+          broken=$(curl -sS -o /tmp/broken.json -w "%{http_code}" --max-time 20 "$DEMO_URL/api/demo/checkout?mode=broken") || true
+          page=$(curl -sS -o /dev/null -w "%{http_code}" --max-time 20 "$DEMO_URL/demo") || true
+
+          echo "demo page: $page"
+          echo "healthy case: $healthy"
+          echo "broken case: $broken"
+
+          test "$page" = "200"
+          test "$healthy" = "200"
+          test "$broken" = "503"
+          grep -q "PAYMENT_PROVIDER_UNAVAILABLE" /tmp/broken.json
+          echo "Live demo is reachable and both cases behave as documented."

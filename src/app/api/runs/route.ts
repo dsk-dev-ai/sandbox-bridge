@@ -1,0 +1,9 @@
+import { NextResponse } from "next/server";
+import { listRuns } from "@/lib/store";
+
+export const dynamic = "force-dynamic";
+
+export async function GET() {
+  const runs = listRuns(100);
+  return NextResponse.json({ runs });
+}

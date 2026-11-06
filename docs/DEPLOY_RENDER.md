@@ -1,7 +1,15 @@
 # Publish the live demo to GitHub + Render
 
+Current public demo: <https://proving-ground-mrm6.onrender.com/demo>
+(GitHub: <https://github.com/dsk-dev-ai/sandbox-bridge>)
+
 Goal: every visitor to the GitHub repository sees a live demo link, a screenshot of
 the failure flow, and CI/live-status badges.
+
+The checked-in public demo was created on Render's free plan without a disk, so it
+can sleep when idle and its SQLite history resets on restart. To make delivery real,
+add `RESEND_API_KEY`, `ALERT_TO_EMAIL`, and `ALERT_FROM_EMAIL` in the Render
+dashboard. The Blueprint below is the persistent, always-warm path.
 
 GitHub does not execute code in a README and strips iframes, so the public URL plus
 the screenshot is the integration. The app runs on Render; the repository links to
@@ -29,8 +37,8 @@ If the repository name is not `sandbox-bridge`, update the badge URLs in
    - `ALERT_TO_EMAIL` — where the developer alert is delivered.
    - `ALERT_FROM_EMAIL` — a verified sender, e.g.
      `Proving Ground <alerts@yourdomain.com>`.
-   - `APP_URL` — prefilled as `https://proving-ground.onrender.com`. Change it if
-     Render assigns a different service name.
+   - `APP_URL` — prefilled for the public demo. Change it to your own service URL
+     if you deploy a copy.
 4. Apply the Blueprint and wait for the first deploy.
 5. Open `https://<your-service>.onrender.com/demo` and run the broken case.
 

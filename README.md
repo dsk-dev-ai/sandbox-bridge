@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/dsk-dev-ai/sandbox-bridge/actions/workflows/ci.yml/badge.svg)](https://github.com/dsk-dev-ai/sandbox-bridge/actions/workflows/ci.yml)
 [![Live demo check](https://github.com/dsk-dev-ai/sandbox-bridge/actions/workflows/live-demo.yml/badge.svg)](https://github.com/dsk-dev-ai/sandbox-bridge/actions/workflows/live-demo.yml)
-[![Live demo](https://img.shields.io/badge/live_demo-open-7cf5c4?style=flat-square)](https://proving-ground.onrender.com/demo)
+[![Live demo](https://img.shields.io/badge/live_demo-open-7cf5c4?style=flat-square)](https://proving-ground-mrm6.onrender.com/demo)
 
 A two-sided sandbox bridge between the people who build software and the people who have to live with it.
 
@@ -12,7 +12,7 @@ Developers publish a runnable contract of their product — endpoints, realistic
 
 ## Live demo
 
-Open **<https://proving-ground.onrender.com/demo>** to see the working-vs-broken checkout, the exact customer message, and the Resend developer alert in one screen.
+Open **<https://proving-ground-mrm6.onrender.com/demo>** to see the working-vs-broken checkout, the exact customer message, and the Resend developer alert in one screen.
 
 The broken case opens an incident, sends the developer an email with the request ID, latency, and customer-facing message, then suppresses duplicate alerts. The healthy case sends a recovery email and closes the incident.
 
@@ -32,7 +32,9 @@ The broken case opens an incident, sends the developer an email with the request
 
 </details>
 
-Every repository visitor can try it without signing in or entering a real card. To publish your own copy, follow [docs/DEPLOY_RENDER.md](docs/DEPLOY_RENDER.md). The `CI` workflow verifies every push, and the `Live demo check` workflow probes the public deployment every 30 minutes once the `DEMO_URL` repository variable is set.
+Every repository visitor can try it without signing in or entering a real card. To publish your own copy, follow [docs/DEPLOY_RENDER.md](docs/DEPLOY_RENDER.md). The `CI` workflow verifies every push, and the `Live demo check` workflow probes the public deployment every 30 minutes.
+
+> The public demo runs on Render's free tier, so it can take up to a minute to wake and its SQLite history resets when the service sleeps. Alert delivery shows an exact email preview until `RESEND_API_KEY`, `ALERT_TO_EMAIL`, and `ALERT_FROM_EMAIL` are added in the Render dashboard. The included Blueprint uses the Starter plan plus a disk for a persistent, always-warm deployment.
 
 ## Why this exists
 
@@ -119,16 +121,16 @@ The named volume keeps sandboxes and proof reports between restarts.
 
 ## Publish on GitHub + Render
 
-The repository is ready to publish so repo visitors see the live demo immediately:
+This repository is published at <https://github.com/dsk-dev-ai/sandbox-bridge>, and the public demo runs at <https://proving-ground-mrm6.onrender.com/demo>.
 
-- `render.yaml` defines the web service, a 1 GB disk for SQLite, and the required environment variables.
+- `render.yaml` defines the web service, a 1 GB disk for SQLite, and the required environment variables for a persistent deployment.
 - `.github/workflows/ci.yml` runs lint, typecheck, build, and a smoke test of both checkout modes on every push.
 - `.github/workflows/live-demo.yml` probes the public deployment every 30 minutes and shows a status badge.
 - [docs/DEPLOY_RENDER.md](docs/DEPLOY_RENDER.md) walks through creating the GitHub repo, applying the Render Blueprint, adding the Resend secrets, and setting the `DEMO_URL` repository variable.
 
 [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/dsk-dev-ai/sandbox-bridge)
 
-If Render assigns a different service name, update the demo URL and badge in this README plus the `DEMO_URL` repository variable.
+For your own deployment, update the demo URL and badge in this README plus the `DEMO_URL` repository variable.
 
 ## How a run is scored
 

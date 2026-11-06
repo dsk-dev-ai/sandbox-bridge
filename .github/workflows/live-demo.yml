@@ -21,9 +21,17 @@ jobs:
           fi
 
           DEMO_URL="${DEMO_URL%/}"
-          healthy=$(curl -sS -o /tmp/healthy.json -w "%{http_code}" --max-time 20 "$DEMO_URL/api/demo/checkout?mode=healthy") || true
-          broken=$(curl -sS -o /tmp/broken.json -w "%{http_code}" --max-time 20 "$DEMO_URL/api/demo/checkout?mode=broken") || true
-          page=$(curl -sS -o /dev/null -w "%{http_code}" --max-time 20 "$DEMO_URL/demo") || true
+
+          # Free Render services sleep when idle, so allow a cold start.
+          page=000
+          for attempt in 1 2 3; do
+            page=$(curl -sS -o /dev/null -w "%{http_code}" --max-time 90 "$DEMO_URL/demo") || true
+            [ "$page" = "200" ] && break
+            sleep 5
+          done
+
+          healthy=$(curl -sS --retry 2 --retry-delay 5 --retry-all-errors -o /tmp/healthy.json -w "%{http_code}" --max-time 60 "$DEMO_URL/api/demo/checkout?mode=healthy") || true
+          broken=$(curl -sS --retry 2 --retry-delay 5 --retry-all-errors -o /tmp/broken.json -w "%{http_code}" --max-time 60 "$DEMO_URL/api/demo/checkout?mode=broken") || true
 
           echo "demo page: $page"
           echo "healthy case: $healthy"

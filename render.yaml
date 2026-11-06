@@ -20,7 +20,7 @@ services:
       - key: ALERT_FROM_EMAIL
         sync: false
       - key: APP_URL
-        value: https://proving-ground.onrender.com
+        value: https://proving-ground-mrm6.onrender.com
     disk:
       name: proving-ground-data
       mountPath: /opt/render/project/src/data

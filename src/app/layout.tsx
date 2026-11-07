@@ -16,11 +16,11 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Proving Ground — where products prove themselves before launch",
+    default: "Proving Ground — runnable API proof for developers and buyers",
     template: "%s · Proving Ground",
   },
   description:
-    "A two-sided sandbox bridge. Developers publish realistic product sandboxes; customers run real-world scenarios and get a shareable proof report before committing.",
+    "A two-sided sandbox for APIs. Developers publish the real contract, buyers test normal, stress, and chaos, and both get one timestamped proof report before committing.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

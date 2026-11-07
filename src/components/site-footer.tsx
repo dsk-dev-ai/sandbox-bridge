@@ -11,13 +11,13 @@ export function SiteFooter() {
             <div className="leading-none">
               <p className="text-sm font-semibold text-text">Proving Ground</p>
               <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.18em] text-faint">
-                sandbox bridge
+                runnable API proof
               </p>
             </div>
           </div>
           <p className="mt-4 max-w-md text-sm leading-relaxed text-muted">
-            The two-sided sandbox where developers publish realistic product
-            behavior and customers prove it works before anyone commits.
+            The two-sided sandbox where developers prove reliability and buyers
+            verify the failure path before anyone commits.
           </p>
           <p className="mt-4 font-mono text-[11px] text-faint">
             Local-first demo · sandboxes persist in SQLite on this machine
@@ -26,7 +26,7 @@ export function SiteFooter() {
 
         <div>
           <p className="text-xs font-medium uppercase tracking-wider text-faint">
-            Customers
+            Buyers
           </p>
           <ul className="mt-3 space-y-2 text-sm text-muted">
             <li>
@@ -77,7 +77,7 @@ export function SiteFooter() {
       </div>
       <div className="border-t border-line">
         <div className="mx-auto flex max-w-7xl flex-col gap-2 px-4 py-5 text-xs text-faint sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
-          <p>© {new Date().getFullYear()} Proving Ground. A sandbox bridge demo.</p>
+          <p>© {new Date().getFullYear()} Proving Ground. A runnable API proof demo.</p>
           <p>No payment ever moves here. That is the point.</p>
         </div>
       </div>

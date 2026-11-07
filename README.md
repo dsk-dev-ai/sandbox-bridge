@@ -4,11 +4,35 @@
 [![Live demo check](https://github.com/dsk-dev-ai/sandbox-bridge/actions/workflows/live-demo.yml/badge.svg)](https://github.com/dsk-dev-ai/sandbox-bridge/actions/workflows/live-demo.yml)
 [![Live demo](https://img.shields.io/badge/live_demo-open-7cf5c4?style=flat-square)](https://proving-ground-mrm6.onrender.com/demo)
 
-A two-sided sandbox bridge between the people who build software and the people who have to live with it.
+**Proving Ground is a two-sided sandbox for API products.** Developers publish the real contract — endpoints, latency, failure behavior, and the journeys that matter. Buyers run it under normal, stress, and chaos conditions. Both sides get one timestamped proof report before a contract or migration is signed.
 
-Developers publish a runnable contract of their product — endpoints, realistic latency, honest failure rates, and the customer journeys that matter. Customers run those journeys under normal, stress, or chaos conditions and receive a timestamped proof report. Both sides see the same evidence before a contract, migration, or purchase is committed.
+The live demo shows the part most demos skip: a checkout failing, the developer alert through Resend, the exact customer message, and the recovery email.
 
 > No real payments move and no production traffic is touched. That is the point.
+
+## The problem
+
+A product demo is built for the happy path. A purchase depends on the failure path.
+
+| Who | What they cannot answer today |
+| --- | --- |
+| **Buyers** | "What happens when it times out, rate-limits, or returns a 5xx? Who gets paged? How fast does it recover?" |
+| **Developers** | "Can I prove what the customer sees, how reliable we are under load, and that we will know before the customer reports it?" |
+| **Both** | "Which artifact do we trust — the slide deck, the staging log, the support ticket, or a screenshot?" |
+
+## What it does
+
+Proving Ground puts the developer and the buyer in the same runnable sandbox:
+
+1. **Publish the real contract.** Model endpoints, latency, failure behavior, and the journeys that matter.
+2. **Run it like the real world.** Normal, stress, or chaos; every request, response, and delay in order.
+3. **Keep one shared proof.** A timestamped report shows what passed, what diverged, what the customer saw, and what happens when it breaks.
+
+## Who it's for
+
+- **API developers and platform teams** who need to close deals with evidence instead of promises, and find integration gaps before buyers do.
+- **Technical buyers and integration teams** who need to test the vendor's failure behavior without a six-week integration project.
+- **Support and on-call teams** who need to know the customer message and the alert path before an incident, not during one.
 
 ## Live demo
 
@@ -36,22 +60,9 @@ Every repository visitor can try it without signing in or entering a real card. 
 
 > The public demo runs on Render's free tier, so it can take up to a minute to wake and its SQLite history resets when the service sleeps. Alert delivery shows an exact email preview until `RESEND_API_KEY`, `ALERT_TO_EMAIL`, and `ALERT_FROM_EMAIL` are added in the Render dashboard. The included Blueprint uses the Starter plan plus a disk for a persistent, always-warm deployment.
 
-## Why this exists
-
-Most product evaluation is asymmetric. Developers prove things to themselves in staging. Customers make promises from a slide deck. The failures that matter only appear when a real workflow meets a real failure mode.
-
-Proving Ground puts both parties in the same sandbox:
-
-| Developer side | Customer side |
-| --- | --- |
-| Publish endpoints and mock responses | Browse a catalog of live sandboxes |
-| Set latency and failure rates | Run persona-driven scenarios |
-| Write assertion-based scenarios | Choose normal, stress, or chaos conditions |
-| Publish when the contract is honest | Get a shareable proof report |
-
 ## What is included
 
-- **Landing page** explaining the bridge, with live catalog stats.
+- **Landing page** explaining the problem, the bridge, and the live proof, with catalog stats.
 - **Sandbox catalog** with search and industry filters.
 - **Sandbox detail** with endpoints, response payloads, scenario flow, and an interactive runner.
 - **Scenario runner** that animates the trace step by step and shows request/response bodies.
@@ -72,7 +83,7 @@ Open <http://localhost:3000>. The database is created and seeded automatically a
 
 ```bash
 npm run lint       # eslint
-npm run typecheck  # tsc --noEmit
+npm run typecheck  # generate route types + tsc --noEmit
 npm run build      # production build + type checking
 npm start          # run the production build
 npm run db:reset   # delete the local database; demo data reseeds on next request

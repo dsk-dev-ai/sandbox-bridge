@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import {
   getLeaderboard,
@@ -7,6 +8,7 @@ import {
   listRuns,
 } from "@/lib/store";
 import {
+  Alert,
   ArrowRight,
   ArrowUpRight,
   Activity,
@@ -42,15 +44,33 @@ const HOW_IT_WORKS = [
   },
   {
     step: "02",
-    title: "Customers run their world against it",
-    body: "Pick a persona, run the scenario under normal, stress, or chaos conditions, and watch every request and response in order.",
+    title: "Buyers run their own scenarios",
+    body: "Pick a persona, run the journey under normal, stress, or chaos conditions, and watch every request, response, and delay in order. No integration project required.",
     icon: <Play />,
   },
   {
     step: "03",
     title: "Both sides get one shared proof",
-    body: "A timestamped, shareable report shows what passed, what diverged, and whether the product is safe to adopt — before contracts or migrations.",
+    body: "A timestamped report shows what passed, what diverged, what the customer saw, and whether the product is safe to adopt — before contracts or migrations.",
     icon: <Shield />,
+  },
+];
+
+const PROBLEMS = [
+  {
+    title: "Buyers cannot test the failure path",
+    body: "Timeouts, 5xx responses, rate limits, and recovery are exactly what a technical buyer needs to see. Most demos end before any of that happens.",
+    icon: <Alert />,
+  },
+  {
+    title: "Developers cannot prove readiness",
+    body: "A green staging run says nothing about what the customer sees, who gets paged, or how fast the team can recover. Reliability stays a claim.",
+    icon: <Shield />,
+  },
+  {
+    title: "Both sides leave with different evidence",
+    body: "Sales has a slide deck, engineering has a staging log, support has a ticket. Nobody has one timestamped record the buyer and the developer can share.",
+    icon: <Users />,
   },
 ];
 
@@ -67,7 +87,7 @@ const CHECKS = [
   },
   {
     title: "Latency promises",
-    body: "Every trace records simulated response time, so a customer can judge the experience — not just the feature list.",
+    body: "Every trace records simulated response time, so a buyer can judge the experience — not just the feature list.",
     icon: <Clock />,
   },
   {
@@ -103,39 +123,39 @@ export default function HomePage() {
           <div className="fade-up">
             <span className="chip border-mint/25 bg-mint/5 text-mint">
               <span className="h-1.5 w-1.5 rounded-full bg-mint dot-pulse" />
-              Two-sided sandbox · proof before purchase
+              For API teams and the buyers who depend on them
             </span>
 
             <h1 className="mt-6 text-4xl font-semibold leading-[1.05] tracking-tight text-text sm:text-5xl lg:text-6xl">
-              Prove the product works
-              <span className="block text-mint">before the world finds out.</span>
+              Your buyers should not have to guess
+              <span className="block text-mint">how your API fails.</span>
             </h1>
 
             <p className="mt-6 max-w-xl text-base leading-relaxed text-muted sm:text-lg">
-              Proving Ground is a sandbox bridge between the people who build
-              software and the people who have to live with it. Developers publish
-              a runnable version of their product. Customers run real scenarios
-              against it and walk away with evidence — not a sales deck.
+              Proving Ground is a two-sided sandbox. Developers publish the real
+              contract — endpoints, latency, failure behavior, and the journeys
+              that matter. Buyers run that contract under normal, stress, and chaos
+              conditions. Both sides get one timestamped proof report before a
+              contract or migration is signed.
             </p>
 
             <div className="mt-8 flex flex-wrap items-center gap-3">
-              <Link href="/catalog" className="btn-primary">
-                Browse live sandboxes
+              <Link href="/demo" className="btn-primary">
+                Run the live demo
                 <ArrowRight className="h-4 w-4" />
               </Link>
               <Link href="/provider/new" className="btn-ghost">
                 Publish your product
                 <ArrowUpRight className="h-4 w-4" />
               </Link>
+              <Link
+                href="/catalog"
+                className="inline-flex items-center gap-2 px-1 py-2 text-xs font-medium text-muted hover:text-mint"
+              >
+                Browse live sandboxes
+                <ArrowRight className="h-3.5 w-3.5" />
+              </Link>
             </div>
-
-            <Link
-              href="/demo"
-              className="mt-5 inline-flex items-center gap-2 text-xs font-medium text-mint hover:underline"
-            >
-              See a working API and a broken API handle the same payment
-              <ArrowRight className="h-3.5 w-3.5" />
-            </Link>
 
             <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-3 text-xs text-faint">
               <span className="inline-flex items-center gap-2">
@@ -144,11 +164,11 @@ export default function HomePage() {
               </span>
               <span className="inline-flex items-center gap-2">
                 <Check className="h-3.5 w-3.5 text-mint" />
-                Runs under normal, stress &amp; chaos
+                Failure paths, not just the happy path
               </span>
               <span className="inline-flex items-center gap-2">
                 <Check className="h-3.5 w-3.5 text-mint" />
-                Shareable proof report
+                One proof report both sides can share
               </span>
             </div>
           </div>
@@ -234,7 +254,7 @@ export default function HomePage() {
                 <span className="grid h-6 w-6 place-items-center rounded-full bg-sky/15 text-[10px] font-semibold text-sky">
                   DP
                 </span>
-                <span className="text-xs text-muted">developer + customer</span>
+                <span className="text-xs text-muted">developer + buyer</span>
               </div>
             </div>
           </div>
@@ -273,12 +293,61 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* The problem */}
+      <section id="problem" className="border-b border-line bg-panel/30">
+        <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+          <SectionHeading
+            eyebrow="The trust gap"
+            title="A demo proves the happy path. A purchase depends on everything else."
+            description="Developers prove things to themselves in staging. Buyers make promises to their boss from a slide deck. The first real failure shows up after the contract is signed — when it is expensive to discover."
+          />
+
+          <div className="mt-10 grid gap-4 md:grid-cols-3">
+            {PROBLEMS.map((problem) => (
+              <div key={problem.title} className="card p-6">
+                <span className="grid h-10 w-10 place-items-center rounded-xl border border-bad/25 bg-bad/10 text-bad">
+                  {problem.icon}
+                </span>
+                <h3 className="mt-5 text-base font-semibold text-text">
+                  {problem.title}
+                </h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted">
+                  {problem.body}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          <div className="card mt-4 flex flex-col items-start justify-between gap-4 p-6 sm:flex-row sm:items-center">
+            <div className="flex items-start gap-3">
+              <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg border border-mint/25 bg-mint/10 text-mint">
+                <Check className="h-4 w-4" />
+              </span>
+              <div>
+                <p className="text-sm font-semibold text-text">
+                  Replace the deck, the staging log, and the argument with one
+                  runnable proof.
+                </p>
+                <p className="mt-1 text-xs leading-relaxed text-muted">
+                  The same sandbox shows the buyer what breaks, the developer what
+                  to fix, and both sides what recovery looks like.
+                </p>
+              </div>
+            </div>
+            <Link href="/demo" className="btn-ghost shrink-0">
+              See it fail live
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* The bridge */}
       <section id="how-it-works" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
         <SectionHeading
           eyebrow="The bridge"
           title="One product, two audiences, one source of truth"
-          description="Usually developers prove things to themselves in staging, and customers make promises to their boss from a PDF. Proving Ground puts both parties in the same room."
+          description="The buyer gets evidence without a six-week integration. The developer gets a shorter sales cycle and fewer surprises in production. Both work from the same runnable contract."
         />
 
         <div className="mt-10 grid gap-4 md:grid-cols-3">
@@ -307,14 +376,14 @@ export default function HomePage() {
               For developers
             </span>
             <h3 className="mt-4 text-lg font-semibold text-text">
-              Ship trust, not just an API key
+              Close deals with evidence, not promises
             </h3>
             <ul className="mt-4 space-y-3 text-sm text-muted">
               {[
-                "Publish endpoints with realistic latency and failure behavior",
-                "Write scenarios around real personas and real goals",
+                "Show buyers the failure path before procurement asks for it",
                 "Let buyers self-verify instead of burning sales engineering time",
-                "Watch where integrations fail before the support ticket exists",
+                "Turn reliability into a shareable artifact, not a claim",
+                "Catch integration gaps before the support ticket exists",
               ].map((line) => (
                 <li key={line} className="flex gap-2.5">
                   <Check className="mt-0.5 h-4 w-4 shrink-0 text-sky" />
@@ -331,17 +400,17 @@ export default function HomePage() {
           <div className="bg-panel p-6 sm:p-8">
             <span className="chip border-mint/25 bg-mint/5 text-mint">
               <Users className="h-3.5 w-3.5" />
-              For customers
+              For buyers
             </span>
             <h3 className="mt-4 text-lg font-semibold text-text">
-              Know before you migrate
+              Know what you are buying before you migrate
             </h3>
             <ul className="mt-4 space-y-3 text-sm text-muted">
               {[
-                "Run the vendor's product against your own workflow",
-                "See every request, response, and delay in order",
-                "Stress it like your busiest day, not their demo",
-                "Bring a timestamped proof report to the buying decision",
+                "Test the vendor's product without a six-week integration",
+                "See exactly what your customer sees when it breaks",
+                "Stress the workflow like your busiest day, not their demo",
+                "Bring timestamped evidence to the buying decision",
               ].map((line) => (
                 <li key={line} className="flex gap-2.5">
                   <Check className="mt-0.5 h-4 w-4 shrink-0 text-mint" />
@@ -357,13 +426,79 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Live demo teaser */}
+      <section id="live-demo" className="border-y border-line bg-gradient-to-b from-panel/40 to-transparent">
+        <div className="mx-auto grid max-w-7xl gap-10 px-4 py-20 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:items-center lg:px-8">
+          <div>
+            <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-mint">
+              See it fail live
+            </p>
+            <h2 className="mt-3 text-2xl font-semibold tracking-tight text-text sm:text-3xl">
+              When the API breaks, who gets paged — and what does the buyer see?
+            </h2>
+            <p className="mt-3 text-sm leading-relaxed text-muted sm:text-base">
+              The live demo runs the same checkout against a healthy API and a
+              broken API. The broken case opens an incident, emails the developer
+              through Resend, and shows the exact customer message. The healthy
+              case sends the recovery email and closes the loop.
+            </p>
+            <ul className="mt-6 space-y-3 text-sm text-muted">
+              {[
+                "Real 200 and 503 responses from a live endpoint",
+                "Developer alert with request ID, latency, and customer message",
+                "Duplicate suppression and a recovery email on the next healthy run",
+              ].map((line) => (
+                <li key={line} className="flex gap-2.5">
+                  <Check className="mt-0.5 h-4 w-4 shrink-0 text-mint" />
+                  {line}
+                </li>
+              ))}
+            </ul>
+            <div className="mt-7 flex flex-wrap gap-3">
+              <Link href="/demo" className="btn-primary">
+                Run the live demo
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+              <Link href="/catalog" className="btn-ghost">
+                Browse live sandboxes
+              </Link>
+            </div>
+          </div>
+
+          <Link
+            href="/demo"
+            className="card group relative overflow-hidden transition-colors hover:border-mint/40"
+          >
+            <div className="flex items-center justify-between border-b border-line px-5 py-3">
+              <span className="font-mono text-[10px] uppercase tracking-widest text-faint">
+                /demo · live endpoint
+              </span>
+              <span className="inline-flex items-center gap-1.5 text-xs font-medium text-mint">
+                Open
+                <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+              </span>
+            </div>
+            <Image
+              src="/live-demo.png"
+              width={2272}
+              height={1928}
+              alt="Live demo showing a working checkout, a broken checkout, and the developer alert card"
+              className="h-auto w-full"
+            />
+            <div className="border-t border-line px-5 py-3 text-xs text-muted">
+              Broken checkout, developer alert card, and Resend delivery log.
+            </div>
+          </Link>
+        </div>
+      </section>
+
       {/* What it catches */}
       <section id="trust" className="border-y border-line bg-panel/30">
         <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
           <SectionHeading
             eyebrow="What the proof catches"
-            title="The failures that only appear in the real world"
-            description="A sandbox is not a screenshot gallery. Each run checks the product against the promise a customer is about to build on."
+            title="What a demo hides and a proof exposes"
+            description="A sandbox is not a screenshot gallery. Each run checks the product against the promise a buyer is about to build on."
           />
           <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {CHECKS.map((check) => (
@@ -388,7 +523,7 @@ export default function HomePage() {
         <SectionHeading
           eyebrow="In the sandbox"
           title="Live products you can test right now"
-          description="Each one is a two-sided contract: a provider published it, and any customer can run it."
+          description="Each one is a two-sided contract: a provider published it, and any buyer can run it."
           actions={
             <Link href="/catalog" className="btn-ghost">
               View all
@@ -469,14 +604,14 @@ export default function HomePage() {
           <div className="relative flex flex-col items-start justify-between gap-8 md:flex-row md:items-center">
             <div className="max-w-xl">
               <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-mint">
-                Stop demoing. Start proving.
+                Stop demoing the happy path.
               </p>
               <h2 className="mt-3 text-3xl font-semibold tracking-tight text-text">
-                Put your product in the sandbox.
+                Give buyers a sandbox they can try to break.
               </h2>
               <p className="mt-3 text-sm leading-relaxed text-muted">
-                Ten minutes to publish a contract your customers can test. One
-                shared report to replace a week of “it should work.”
+                Ten minutes to publish a contract buyers can test. One shared
+                report to replace a week of “it should work.”
               </p>
             </div>
             <div className="flex flex-wrap gap-3">

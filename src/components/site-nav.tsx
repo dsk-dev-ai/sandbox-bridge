@@ -25,7 +25,7 @@ export function SiteNav() {
               Proving Ground
             </span>
             <span className="mt-1 font-mono text-[10px] uppercase tracking-[0.18em] text-faint">
-              sandbox bridge
+              runnable API proof
             </span>
           </span>
         </Link>
